@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <pre id='form'></pre>
+    <pre id='json'></pre>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+    <script>
+
+        const toJson = (input) => JSON.stringify(input, null, 4);
+
+        $(document).ready(function () {
+            $.ajax({
+                method: 'POST',
+                url: 'api/body-or-form',
+                contentType: 'application/x-www-form-urlencoded',
+                data: 'email=foo',
+                success(response) {
+                    const json = toJson(response);
+                    $('#form').append(json);
+                }
+            });
+
+            $.ajax({
+                method: 'POST',
+                contentType: 'application/json',
+                data: toJson({ email: 'foo' }),
+                url: 'api/body-or-form',
+                success(response) {
+                    const json = toJson(response);
+                    $('#json').append(json);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
